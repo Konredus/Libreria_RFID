@@ -32,6 +32,7 @@ RFID tarjeta_rfid(SS_PIN, RST_PIN);
 
 //creo un array con el dato qeu quiero chequear
 //este codigo lo obtenemos del ejemplo de lectura
+
 const int id_usuario[5]={158,137,198,219,10};
 
 void setup()
@@ -57,7 +58,7 @@ void loop()
     //lo que hago en este if es llamar a la funcion que 
     //se encarga de chequear posicion por posicion lo
     //que se leyo de la tarjeta
-    if(chequeo_tarjeta())
+    if(chequeo_tarjeta()==1)
     {
        Serial.println("Acceso Aceptado");
     }
@@ -80,15 +81,10 @@ bool chequeo_tarjeta()
   //con este for recorremos todas las posiciones
   for(int i=0;i<5;i++)
   {
-    //el truco de este if es que si siguen coincidiendo
-    //no hace nada
-    if(tarjeta_rfid.serNum[i]==id_usuario[i])
+    //el truco de este if es chequear si alguna de las posiciones NO coinciden
+    if(tarjeta_rfid.serNum[i]!=id_usuario[i])
     {
-	
-    }
-    else  //en caso de que 1 posicion no coincida, sale del for y retorna 0
-    {
-      return 0;
+	    return 0;
     }
   }
   //si llego hasta aca, es por que todas las posiciones coincidieron
